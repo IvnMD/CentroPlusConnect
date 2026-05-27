@@ -1,7 +1,6 @@
 package es.ies.puerto.repositories.sqlite;
 
 import es.ies.puerto.models.Inscripcion;
-import es.ies.puerto.models.Usuario;
 import es.ies.puerto.repositories.InscripcionRepositoryInterface;
 
 import java.sql.*;
@@ -10,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InscripcionSqliteRepository implements InscripcionRepositoryInterface {
+
     private final SqliteConnectionManager manager;
 
     public InscripcionSqliteRepository() {
@@ -20,8 +20,6 @@ public class InscripcionSqliteRepository implements InscripcionRepositoryInterfa
         this.manager = manager;
         new DatabaseInitializer(manager).createTables();
     }
-
-
 
     @Override
     public List<Inscripcion> findAll() {
@@ -36,7 +34,7 @@ public class InscripcionSqliteRepository implements InscripcionRepositoryInterfa
             }
             return inscripciones;
         } catch (Exception e) {
-            System.err.println("Error en listar todas las inscripcciones");
+            System.err.println("Error en listar todas las inscripciones");
             return new ArrayList<>();
         }
     }
@@ -53,7 +51,7 @@ public class InscripcionSqliteRepository implements InscripcionRepositoryInterfa
                 }
             }
         } catch (Exception e) {
-            System.err.println("Error en buscar usuario por id = " + id);
+            System.err.println("Error en buscar inscripcion por id = " + id);
         }
         return null;
     }
@@ -64,18 +62,17 @@ public class InscripcionSqliteRepository implements InscripcionRepositoryInterfa
         List<Inscripcion> inscripciones = new ArrayList<>();
         try (Connection cn = manager.getConnection();
                 PreparedStatement ps = cn.prepareStatement(sql)) {
-            ps.setInt(1, idUsuario);        
+            ps.setInt(1, idUsuario);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     inscripciones.add(mapInscripcion(rs));
                 }
             }
             return inscripciones;
-   
         } catch (Exception e) {
-            System.err.println("Error en buscar inscripciones por id = " + idUsuario);
+            System.err.println("Error en buscar inscripciones por idUsuario = " + idUsuario);
+            return new ArrayList<>();
         }
-        return null;
     }
 
     @Override
@@ -84,18 +81,17 @@ public class InscripcionSqliteRepository implements InscripcionRepositoryInterfa
         List<Inscripcion> inscripciones = new ArrayList<>();
         try (Connection cn = manager.getConnection();
                 PreparedStatement ps = cn.prepareStatement(sql)) {
-            ps.setInt(1, idActividad);        
+            ps.setInt(1, idActividad);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     inscripciones.add(mapInscripcion(rs));
                 }
             }
             return inscripciones;
-   
         } catch (Exception e) {
-            System.err.println("Error en buscar inscripciones por id = " + idActividad);
+            System.err.println("Error en buscar inscripciones por idActividad = " + idActividad);
+            return new ArrayList<>();
         }
-        return null;
     }
 
     @Override
@@ -108,10 +104,9 @@ public class InscripcionSqliteRepository implements InscripcionRepositoryInterfa
             ps.setInt(3, inscripcion.getIdActividad());
             ps.setString(4, inscripcion.getFecha().toString());
             ps.setString(5, inscripcion.getEstado());
-
             return ps.executeUpdate() == 1;
         } catch (Exception e) {
-            System.err.println("Error al crear usuario");
+            System.err.println("Error al guardar inscripcion");
             return false;
         }
     }
@@ -121,17 +116,14 @@ public class InscripcionSqliteRepository implements InscripcionRepositoryInterfa
         String sql = "UPDATE inscripciones SET id_usuario = ?, id_actividad = ?, fecha = ?, estado = ? WHERE id = ?";
         try (Connection cn = manager.getConnection();
                 PreparedStatement ps = cn.prepareStatement(sql)) {
-            
             ps.setInt(1, inscripcion.getIdUsuario());
             ps.setInt(2, inscripcion.getIdActividad());
             ps.setString(3, inscripcion.getFecha().toString());
             ps.setString(4, inscripcion.getEstado());
-
             ps.setInt(5, inscripcion.getId());
-
             return ps.executeUpdate() == 1;
         } catch (Exception e) {
-            System.err.println("Error al crear usuario");
+            System.err.println("Error al actualizar inscripcion");
             return false;
         }
     }
@@ -142,7 +134,6 @@ public class InscripcionSqliteRepository implements InscripcionRepositoryInterfa
         try (Connection cn = manager.getConnection();
                 PreparedStatement ps = cn.prepareStatement(sql)) {
             ps.setInt(1, id);
-
             return ps.executeUpdate() == 1;
         } catch (Exception e) {
             System.err.println("Error en borrar inscripcion por id = " + id);
@@ -150,14 +141,12 @@ public class InscripcionSqliteRepository implements InscripcionRepositoryInterfa
         }
     }
 
-
-
-    public Inscripcion mapInscripcion(ResultSet rs) throws SQLException{
+    public Inscripcion mapInscripcion(ResultSet rs) throws SQLException {
         return new Inscripcion(
-            rs.getInt("id"),
-            rs.getInt("id_usuario"),
-            rs.getInt("id_actividad"),
-            LocalDate.parse(rs.getString("fecha")),
-            rs.getString("estado"));
+                rs.getInt("id"),
+                rs.getInt("id_usuario"),
+                rs.getInt("id_actividad"),
+                LocalDate.parse(rs.getString("fecha")),
+                rs.getString("estado"));
     }
 }
