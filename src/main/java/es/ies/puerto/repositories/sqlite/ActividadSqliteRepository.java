@@ -13,21 +13,12 @@ public class ActividadSqliteRepository implements ActividadRepositoryInterface {
 
     public ActividadSqliteRepository() {
         this(new SqliteConnectionManager());
-        
     }
 
     public ActividadSqliteRepository(SqliteConnectionManager manager) {
         this.manager = manager;
         new DatabaseInitializer(manager).createTables();
     }
-
-    // private int id;
-    // private String nombre;
-    // private String tipoActividad;
-    // private int duracionMinutos;
-    // private double precio;
-    // private int plazasMaximas;
-    // private int plazasOcupadas;
 
     @Override
     public List<Actividad> findAll() {
@@ -63,7 +54,6 @@ public class ActividadSqliteRepository implements ActividadRepositoryInterface {
             throw new RuntimeException(e);
         }
         return null;
-
     }
 
     @Override
@@ -78,7 +68,6 @@ public class ActividadSqliteRepository implements ActividadRepositoryInterface {
             ps.setDouble(5, actividad.getPrecio());
             ps.setInt(6, actividad.getPlazasMaximas());
             ps.setInt(7, actividad.getPlazasOcupadas());
-
             return ps.executeUpdate() == 1;
         } catch (Exception e) {
             System.err.println("Error al crear actividad");
@@ -88,7 +77,7 @@ public class ActividadSqliteRepository implements ActividadRepositoryInterface {
 
     @Override
     public boolean update(Actividad actividad) {
-        String sql = "UPDATE actividades SET nombre = ?, tipo_actividad = ?, duracion_minutos = ?, precio = ?, plazas_maximas = ?, plazas_ocupadas= ? WHERE id = ?";
+        String sql = "UPDATE actividades SET nombre = ?, tipo_actividad = ?, duracion_minutos = ?, precio = ?, plazas_maximas = ?, plazas_ocupadas = ? WHERE id = ?";
         try (Connection cn = manager.getConnection();
                 PreparedStatement ps = cn.prepareStatement(sql)) {
             ps.setString(1, actividad.getNombre());
@@ -97,9 +86,7 @@ public class ActividadSqliteRepository implements ActividadRepositoryInterface {
             ps.setDouble(4, actividad.getPrecio());
             ps.setInt(5, actividad.getPlazasMaximas());
             ps.setInt(6, actividad.getPlazasOcupadas());
-
             ps.setInt(7, actividad.getId());
-
             return ps.executeUpdate() == 1;
         } catch (Exception e) {
             System.err.println("Error al actualizar actividad");
@@ -113,13 +100,11 @@ public class ActividadSqliteRepository implements ActividadRepositoryInterface {
         try (Connection cn = manager.getConnection();
                 PreparedStatement ps = cn.prepareStatement(sql)) {
             ps.setInt(1, id);
-
             return ps.executeUpdate() == 1;
         } catch (Exception e) {
             System.err.println("Error en borrar actividad por id = " + id);
             throw new RuntimeException(e);
         }
-
     }
 
     public Actividad mapActividad(ResultSet rs) throws SQLException {
@@ -128,7 +113,7 @@ public class ActividadSqliteRepository implements ActividadRepositoryInterface {
                 rs.getString("nombre"),
                 rs.getString("tipo_actividad"),
                 rs.getInt("duracion_minutos"),
-                rs.getInt("precio"),
+                rs.getDouble("precio"),
                 rs.getInt("plazas_maximas"),
                 rs.getInt("plazas_ocupadas"));
     }
