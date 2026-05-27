@@ -3,14 +3,20 @@ package es.ies.puerto.services;
 import es.ies.puerto.models.Usuario;
 import es.ies.puerto.repositories.UsuarioRepositoryInterface;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UsuarioService implements UsuarioServiceInterface {
     private final UsuarioRepositoryInterface repository;
     private static final String EMAIL_PATRON = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
 
-    public UsuarioService(UsuarioRepositoryInterface repository) {
-        this.repository = repository;
+    public InscripcionService(InscripcionRepositoryInterface inscripcionRepository,
+                               UsuarioRepositoryInterface usuarioRepository,
+                               ActividadRepositoryInterface actividadRepository) {
+        this.inscripcionRepository = inscripcionRepository;
+        this.usuarioRepository = usuarioRepository;
+        this.actividadRepository = actividadRepository;
     }
 
     @Override
