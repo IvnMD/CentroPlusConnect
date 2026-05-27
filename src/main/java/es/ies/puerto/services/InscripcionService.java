@@ -1,15 +1,15 @@
 package es.ies.puerto.services;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 import es.ies.puerto.models.Actividad;
 import es.ies.puerto.models.Constantes;
 import es.ies.puerto.models.Inscripcion;
 import es.ies.puerto.repositories.ActividadRepositoryInterface;
 import es.ies.puerto.repositories.InscripcionRepositoryInterface;
 import es.ies.puerto.repositories.UsuarioRepositoryInterface;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 public class InscripcionService implements InscripcionServiceInterface {
 
@@ -18,8 +18,8 @@ public class InscripcionService implements InscripcionServiceInterface {
     private final ActividadRepositoryInterface actividadRepository;
 
     public InscripcionService(InscripcionRepositoryInterface inscripcionRepository,
-                               UsuarioRepositoryInterface usuarioRepository,
-                               ActividadRepositoryInterface actividadRepository) {
+            UsuarioRepositoryInterface usuarioRepository,
+            ActividadRepositoryInterface actividadRepository) {
         this.inscripcionRepository = inscripcionRepository;
         this.usuarioRepository = usuarioRepository;
         this.actividadRepository = actividadRepository;
@@ -30,23 +30,26 @@ public class InscripcionService implements InscripcionServiceInterface {
         return inscripcionRepository.findAll();
     }
 
-    @Override
-    public Inscripcion findById(int id) {
-        if (id <= 0) return null;
-        return inscripcionRepository.findById(id);
-    }
+@Override
+public Inscripcion findById(int id) {
+    if (id <= 0) return null;
+    return inscripcionRepository.findById(id);
+}
 
     @Override
     public List<Inscripcion> findByUsuario(int idUsuario) {
-        if (idUsuario <= 0) return new ArrayList<>();
+        if (idUsuario <= 0)
+            return new ArrayList<>();
         return inscripcionRepository.findByUsuario(idUsuario);
     }
 
-    @Override
-    public List<Inscripcion> findByActividad(int idActividad) {
-        if (idActividad <= 0) return new ArrayList<>();
-        return inscripcionRepository.findByActividad(idActividad);
+@Override
+public List<Inscripcion> findByActividad(int idActividad) {
+    if (idActividad <= 0) {
+        return new ArrayList<>();
     }
+    return inscripcionRepository.findByActividad(idActividad);
+}
 
     @Override
     public boolean save(Inscripcion inscripcion) {
@@ -92,34 +95,37 @@ public class InscripcionService implements InscripcionServiceInterface {
 
     @Override
     public boolean update(Inscripcion inscripcion) {
-        if (inscripcion == null) return false;
-        if (inscripcionRepository.findById(inscripcion.getId()) == null) return false;
+        if (inscripcion == null)
+            return false;
+        if (inscripcionRepository.findById(inscripcion.getId()) == null)
+            return false;
         return inscripcionRepository.update(inscripcion);
     }
 
     @Override
     public boolean delete(int id) {
-        if (id <= 0) return false;
+        if (id <= 0)
+            return false;
         return inscripcionRepository.delete(id);
     }
 
     @Override
     public boolean cancelar(int id) {
-        if (id <= 0) return false;
-
+        if (id <= 0) {
+            return false;
+        }
         Inscripcion inscripcion = inscripcionRepository.findById(id);
-        if (inscripcion == null) return false;
-
-        // ya cancelada → no se puede volver a cancelar
-        if (!inscripcion.estaActiva()) return false;
-
-        // liberar plaza en la actividad
+        if (inscripcion == null) {
+            return false;
+        }
+        if (!inscripcion.estaActiva()) {
+            return false;
+        }
         Actividad actividad = actividadRepository.findById(inscripcion.getIdActividad());
         if (actividad != null) {
             actividad.cancelarPlaza();
             actividadRepository.update(actividad);
         }
-
         inscripcion.cancelar();
         return inscripcionRepository.update(inscripcion);
     }
