@@ -1,14 +1,11 @@
 package es.ies.puerto.repositories.sqlite;
 
-import es.ies.puerto.models.Actividad;
 import es.ies.puerto.models.Usuario;
 import es.ies.puerto.repositories.UsuarioRepositoryInterface;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.management.RuntimeErrorException;
 
 public class UsuarioSqliteRepository implements UsuarioRepositoryInterface {
 
@@ -36,10 +33,9 @@ public class UsuarioSqliteRepository implements UsuarioRepositoryInterface {
             }
             return usuarios;
         } catch (Exception e) {
-            System.err.println("Error en listar todas los usuarios");
+            System.err.println("Error en listar todos los usuarios");
             return new ArrayList<>();
         }
-
     }
 
     @Override
@@ -55,15 +51,14 @@ public class UsuarioSqliteRepository implements UsuarioRepositoryInterface {
             }
         } catch (Exception e) {
             System.err.println("Error en buscar usuario por id = " + id);
-        throw new RuntimeException();        
-}
+            throw new RuntimeException(e);
+        }
         return null;
-        
     }
 
     @Override
     public boolean save(Usuario usuario) {
-        String sql = "INSERT INTO usuarios (id, nombre, dni, email,telefono, tipo_usuario) VALUES (?,?,?,?,?,?)";
+        String sql = "INSERT INTO usuarios (id, nombre, dni, email, telefono, tipo_usuario) VALUES (?,?,?,?,?,?)";
         try (Connection cn = manager.getConnection();
                 PreparedStatement ps = cn.prepareStatement(sql)) {
             ps.setInt(1, usuario.getId());
@@ -72,10 +67,9 @@ public class UsuarioSqliteRepository implements UsuarioRepositoryInterface {
             ps.setString(4, usuario.getEmail());
             ps.setString(5, usuario.getTelefono());
             ps.setString(6, usuario.getTipoUsuario());
-
             return ps.executeUpdate() == 1;
         } catch (Exception e) {
-            System.err.println("Error al crear usuario");
+            System.err.println("Error al guardar usuario");
             return false;
         }
     }
@@ -85,18 +79,15 @@ public class UsuarioSqliteRepository implements UsuarioRepositoryInterface {
         String sql = "UPDATE usuarios SET nombre = ?, dni = ?, email = ?, telefono = ?, tipo_usuario = ? WHERE id = ?";
         try (Connection cn = manager.getConnection();
                 PreparedStatement ps = cn.prepareStatement(sql)) {
-
             ps.setString(1, usuario.getNombre());
             ps.setString(2, usuario.getDni());
             ps.setString(3, usuario.getEmail());
             ps.setString(4, usuario.getTelefono());
             ps.setString(5, usuario.getTipoUsuario());
-
             ps.setInt(6, usuario.getId());
-
             return ps.executeUpdate() == 1;
         } catch (Exception e) {
-            System.err.println("Error al crear usuario");
+            System.err.println("Error al actualizar usuario");
             return false;
         }
     }
@@ -107,7 +98,6 @@ public class UsuarioSqliteRepository implements UsuarioRepositoryInterface {
         try (Connection cn = manager.getConnection();
                 PreparedStatement ps = cn.prepareStatement(sql)) {
             ps.setInt(1, id);
-
             return ps.executeUpdate() == 1;
         } catch (Exception e) {
             System.err.println("Error en borrar usuario por id = " + id);
@@ -124,5 +114,4 @@ public class UsuarioSqliteRepository implements UsuarioRepositoryInterface {
                 rs.getString("telefono"),
                 rs.getString("tipo_usuario"));
     }
-
 }
