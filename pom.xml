@@ -1,9 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.ejemplo</groupId>
-    <artifactId>gimnasio-sqlite</artifactId>
+    <artifactId>centroplus-connect</artifactId>
     <version>1.0.0</version>
 
     <properties>
@@ -15,6 +14,7 @@
         <surefire.version>3.2.5</surefire.version>
         <exec.version>3.3.0</exec.version>
         <jacoco.version>0.8.11</jacoco.version>
+        <mockito-version>5.12.0</mockito-version>
         <build-helper.version>3.5.0</build-helper.version>
     </properties>
 
@@ -39,7 +39,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
                 <configuration>
-                    <release>17</release>
+                    <source>17</source>
+                    <target>17</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -54,76 +55,84 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${jacoco.version}</version>
+
                 <executions>
+
+                    <!-- Activa JaCoCo -->
                     <execution>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
                     </execution>
+
+                    <!-- Genera el reporte -->
                     <execution>
                         <id>report</id>
                         <phase>test</phase>
+
                         <goals>
                             <goal>report</goal>
                         </goals>
                     </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>${exec.version}</version>
-                <executions>
-                    <execution>
-                        <id>nota</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>python3</executable>
-                            <arguments>
-                                <argument>${project.basedir}/tools/calcular_nota.py</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 
-    <profiles>
-        <profile>
-            <id>calificar</id>
-            <properties>
-                <maven.test.failure.ignore>true</maven.test.failure.ignore>
-            </properties>
-        </profile>
-        <profile>
-            <id>hidden-tests</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>build-helper-maven-plugin</artifactId>
-                        <version>${build-helper.version}</version>
-                        <executions>
-                            <execution>
-                                <id>add-hidden-test-source</id>
-                                <phase>generate-test-sources</phase>
-                                <goals>
-                                    <goal>add-test-source</goal>
-                                </goals>
-                                <configuration>
-                                    <sources>
-                                        <source>src/hidden-test/java</source>
-                                    </sources>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
+                </executions>
+
+            </plugin>
+        <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>${exec.version}</version>
+            <executions>
+                <execution>
+                    <id>nota</id>
+                    <phase>verify</phase>
+                    <goals>
+                        <goal>exec</goal>
+                    </goals>
+                    <configuration>
+                        <executable>python3</executable>
+                        <arguments>
+                            <argument>${project.basedir}/tools/calcular_nota.py</argument>
+                        </arguments>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+</build>
+
+<profiles>
+    <profile>
+        <id>calificar</id>
+        <properties>
+            <maven.test.failure.ignore>true</maven.test.failure.ignore>
+        </properties>
+    </profile>
+    <profile>
+        <id>hidden-tests</id>
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>${build-helper.version}</version>
+                    <executions>
+                        <execution>
+                            <id>add-hidden-test-source</id>
+                            <phase>generate-test-sources</phase>
+                            <goals>
+                                <goal>add-test-source</goal>
+                            </goals>
+                            <configuration>
+                                <sources>
+                                    <source>src/hidden-test/java</source>
+                                </sources>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </build>
+    </profile>
+</profiles>
 </project>
