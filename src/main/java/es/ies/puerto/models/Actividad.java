@@ -10,10 +10,31 @@ public class Actividad {
     private int plazasMaximas;
     private int plazasOcupadas;
 
+    /**
+     * Constructor vacio/por defecto
+     */
     public Actividad(){
         
     }
 
+    /**
+     * Constructor por identificador unico para busquedas
+     * @param id identificador unico de la actividad
+     */
+    public Actividad(int id){
+        this.id = id;
+    }
+
+    /**
+     * Constructor de la clase
+     * @param id identificador de la actividad
+     * @param nombre Nombre de la actividad
+     * @param tipoActividad tipo de la actividad
+     * @param duracionMinutos Duracion de la actividad
+     * @param precio precio de la actividad
+     * @param plazasMaximas plazas maximas de la actividad
+     * @param plazasOcupadas plazas ocupadas de la actividad
+     */
     public Actividad(int id, String nombre, String tipoActividad,
             int duracionMinutos, double precio,
             int plazasMaximas, int plazasOcupadas) {
@@ -28,6 +49,10 @@ public class Actividad {
 
     public int calcularPlazasDisponibles() {
         return plazasMaximas - plazasOcupadas;
+    }
+
+    public int getPlazasDisponibles(){
+        return calcularPlazasDisponibles();
     }
 
     public boolean hayPlazasLibres() {
@@ -137,10 +162,10 @@ public class Actividad {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
         if (obj == null)
             return false;
+        if (this == obj)
+            return true;
         if (getClass() != obj.getClass())
             return false;
         Actividad other = (Actividad) obj;
