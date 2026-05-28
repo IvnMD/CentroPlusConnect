@@ -1,28 +1,28 @@
 ---
-name: "📝 Tarea General"
+name: "Tarea General"
 about: Cualquier tarea que no sea bug ni feature (refactor, docs, tests, config...)
 labels: task
 assignees: ''
 ---
 
-## 📝 Descripción
+## Descripción
 <!-- Explica qué se debe hacer y por qué. -->
 
 
-## 🛠️ Tareas
+## Tareas
 - [ ] 
 - [ ] 
 - [ ] 
 
-## 🏷️ Tipo de Tarea
+## Tipo de Tarea
 <!-- Marca con una X la que corresponda -->
-- [ ] 📚 Documentación
-- [ ] 🧹 Refactorización / limpieza de código
-- [ ] 🧪 Tests
-- [ ] ⚙️ Configuración / infraestructura
-- [ ] 🔒 Seguridad
-- [ ] 📦 Dependencias / actualizaciones
-- [ ] 🎨 Diseño / UI
+- [ ] Documentación
+- [ ] Refactorización / limpieza de código
+- [ ] Tests
+- [ ] Configuración / infraestructura
+- [ ] Seguridad
+- [ ] Dependencias / actualizaciones
+- [ ] Diseño / UI
 
 ## ⏱️ Estimación de Esfuerzo
 <!-- Marca con una X la que corresponda -->
@@ -32,10 +32,10 @@ assignees: ''
 - [ ] L — varios días
 - [ ] XL — más de una semana (considera dividirla)
 
-## 🔗 Dependencias
+## Dependencias
 <!-- ¿Esta tarea depende de otras? ¿O hay tareas que dependen de esta? -->
 - Depende de: #
 - Bloquea a: #
 
-## 🗂️ Proyecto
+## Proyecto
 <!-- Añade este issue al proyecto correspondiente para activar automatizaciones. -->

@@ -1,34 +1,37 @@
-## 📝 Descripción
-Explica brevemente qué cambios introduces y por qué.  
-Si este PR resuelve una tarea del proyecto, referencia el issue usando palabras clave para automatizar el Kanban:
+## Descripción
+<!-- Explica brevemente qué cambios introduces y por qué. -->
 
-- `Closes #ID`
-- `Fixes #ID`
-- `Resolves #ID`
 
-Ejemplo: `Closes #12`  
-Esto moverá automáticamente el issue en el proyecto y lo cerrará al fusionar el PR.
+## Issue Relacionado
+<!-- Usa palabras clave para cerrar el issue automáticamente y moverlo en el Kanban. -->
+- Closes #
+<!-- Otras opciones: Fixes #ID · Resolves #ID -->
 
-## 🗂️ Proyecto y Automatización
-Si este PR está asociado a un proyecto de GitHub, asegúrate de que el issue correspondiente está añadido al proyecto.  
-GitHub moverá automáticamente el issue en el tablero si:
+## Tipo de Cambio
+- [ ] Nueva funcionalidad (feature)
+- [ ] Corrección de errores (bugfix)
+- [ ] Refactorización o limpieza de código
+- [ ] Tests
+- [ ] Documentación
+- [ ] Configuración / infraestructura
+- [ ] Seguridad
 
-- El PR está vinculado al issue  
-- El issue pertenece al proyecto  
-- El proyecto tiene reglas automáticas activadas  
+## ¿Cómo se ha probado?
+<!-- Describe brevemente cómo verificaste que los cambios funcionan correctamente. -->
+- [ ] Pruebas manuales en local
+- [ ] Tests unitarios ejecutados (`mvn test` / `npm test` / etc.)
+- [ ] Tests de integración
+- [ ] No requiere prueba (solo documentación o config)
 
-## 🛠️ Tipo de Cambio
-- [ ] 🚀 Nueva funcionalidad (feature)
-- [ ] 🐛 Corrección de errores (bugfix)
-- [ ] 🧹 Refactorización o limpieza de código
-- [ ] 📝 Documentación
-
-## 🧪 Lista de Verificación (Checklist)
+## Lista de Verificación (Checklist)
 - [ ] El código funciona correctamente en mi entorno local.
-- [ ] He probado los cambios (ej. ejecución de `generar_web.py` sin errores).
-- [ ] El archivo `entidades.json` sigue el esquema oficial si ha sido modificado.
+- [ ] He añadido o actualizado tests si era necesario.
+- [ ] La documentación está actualizada si era necesario.
 - [ ] No he subido credenciales, claves ni archivos temporales.
 - [ ] He vinculado este PR al issue correspondiente usando `Closes #ID`.
 
-## 📷 Capturas de Pantalla (Opcional)
-Si el cambio afecta a la interfaz visual de la web estática, adjunta aquí una captura del resultado.
+## Proyecto y Automatización
+<!-- Asegúrate de que el issue relacionado está añadido al proyecto de GitHub para que el tablero Kanban se actualice automáticamente al fusionar este PR. -->
+
+## Capturas de Pantalla (Opcional)
+<!-- Si el cambio afecta a la interfaz visual, adjunta una captura del resultado. -->
