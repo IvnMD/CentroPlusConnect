@@ -1,8 +1,5 @@
 package es.ies.puerto.repositories.csv;
 
-import es.ies.puerto.models.Actividad;
-import es.ies.puerto.repositories.ActividadRepositoryInterface;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -11,6 +8,9 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+
+import es.ies.puerto.models.Actividad;
+import es.ies.puerto.repositories.ActividadRepositoryInterface;
 
 public class ActividadCsvRepository implements ActividadRepositoryInterface {
     private final Path path;
@@ -56,14 +56,20 @@ public class ActividadCsvRepository implements ActividadRepositoryInterface {
         try (BufferedReader br = new BufferedReader(new FileReader(path.toString()))) {
             String line;
             while ((line = br.readLine()) != null) {
-                if (line.isBlank()) continue;
-                Actividad actividad = parseLine(line);
-                if (actividad.getId() == id) {
-                    return actividad;
+                String[] values = line.split(",");
+                if (Integer.parseInt(values[0].strip()) == id) {
+                    return new Actividad(
+                            Integer.parseInt(values[0].strip()),
+                            values[1].strip(),
+                            values[2].strip(),
+                            Integer.parseInt(values[3].strip()),
+                            Double.parseDouble(values[4].strip()),
+                            Integer.parseInt(values[5].strip()),
+                            Integer.parseInt(values[6].strip()));
                 }
             }
         } catch (Exception e) {
-            System.err.println("No se ha podido leer el fichero: " + path);
+            System.err.printf("No se ha podido leer el fichero %s%n", path);
         }
         return null;
     }
@@ -91,16 +97,36 @@ public class ActividadCsvRepository implements ActividadRepositoryInterface {
                 break;
             }
         }
-        if (!encontrada) return false;
-        return writeAll(actividades);
+        if (!encontrada) {
+            return false;
+        }
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(path.toString()))) {
+            for (Actividad a : actividades) {
+                bw.write(a.toCsvLine());
+                bw.newLine();
+            }
+            return true;
+        } catch (IOException e) {
+            throw new IllegalStateException("Error al actualizar el fichero CSV.", e);
+        }
     }
 
     @Override
     public boolean delete(int id) {
         List<Actividad> actividades = findAll();
         boolean eliminada = actividades.removeIf(a -> a.getId() == id);
-        if (!eliminada) return false;
-        return writeAll(actividades);
+        if (!eliminada) {
+            return false;
+        }
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(path.toString()))) {
+            for (Actividad a : actividades) {
+                bw.write(a.toCsvLine());
+                bw.newLine();
+            }
+            return true;
+        } catch (IOException e) {
+            throw new IllegalStateException("Error al eliminar del fichero CSV.", e);
+        }
     }
 
     private boolean writeAll(List<Actividad> actividades) {
