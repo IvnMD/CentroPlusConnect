@@ -1,7 +1,7 @@
 PRAGMA foreign_keys = ON;
 
 DROP TABLE IF EXISTS incidencias;
-DROP TABLE IF EXISTS reservas;
+DROP TABLE IF EXISTS inscripciones;
 DROP TABLE IF EXISTS actividades;
 DROP TABLE IF EXISTS usuarios;
 
@@ -20,13 +20,13 @@ CREATE TABLE actividades (
     nombre           TEXT NOT NULL,
     tipo_actividad   TEXT NOT NULL,
     -- Valores válidos: ACADEMICA, DEPORTIVA
-    duracion         INTEGER NOT NULL,
+    duracion_minutos INTEGER NOT NULL,
     precio           REAL NOT NULL,
     plazas_maximas   INTEGER NOT NULL,
     plazas_ocupadas  INTEGER NOT NULL
 );
 
-CREATE TABLE reservas (
+CREATE TABLE inscripciones (
     id            INTEGER PRIMARY KEY,
     id_usuario    INTEGER NOT NULL,
     id_actividad  INTEGER NOT NULL,
